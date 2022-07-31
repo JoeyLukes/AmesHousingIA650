@@ -131,22 +131,82 @@
 	
 
 	Overall Quality, Neighborhoods and Overall Condition do have significantly different means and therefore they may have an impact and we will have to keep them in for analysis.
+
+	\section{Modelling}
+
+	\subesction{Data Prep & Standardization}
 	
-	
-	First look at data / pre-processing
-	
-	exploratory methods
-	
-	maybe final method
+	As stated in previous the "Skewness of Variables" section, we first log transform the features LotFrontage, Lot Area, Wood Deck Square Footage, Total Square Footage, Total Porch Square Footage, and Years Old. In addidtion to those features, we log transform the target varaible, Sales Price.
+
+	\subsection{Binary Variables}
+
+	Keep in mind that there are only three categorical variables remaining at this point: Location, Overall Quality, and Overall Condition.
+
+	In order to pass these categorical variables into a regression model, they must be converted into binary variables. One for each member of the category. The following number of binary variables were created from each categorical features:
+
+	\begin{enumerate}
+		\item Neighborhood
+		\item[\textbullet] 25: One for each neighborhood
+		\item Overall Quality
+		\item[\textbullet] 10: One for each rating 1 - 10.
+		\item Overall Condition
+		\item[\textbullet] 10: One for each rating 1 - 10.
+
+	\subsection{Multi-Linear Regression}
+
+	Our first approach will be multi-linear regression.
+
+	With multi-linear regression, we first wanted to calculate The Variance Inflation Factor (VIF) for each variable. While we were aiming for variables with a VIF of five or less, we would accept anything VIF below ten. Each numerical variable and their VIF is shown in the table below:
+
+	Table Here
+
+	From the VIF scores, we have determined that we will keep all seven of the numerical features in our feature set. 
+
+	From there it is time to perform the MLR.
+
+	While this table is lengthy because of the 45 binary variables, you can still discern it's significance:
+
+	Table Here
+
+	From the above table, we can see that in general, the model is pretty effective. With and Adjusted R-Squared of 0.909, we are explaining almost 91 percent of the variance. Our plot of residuals may be slightly skewed to the positive residuals, but nothing of too much concern. The p-value of the model was too low for the software to discern, so we are left with a p-value that is virtually 0. 
+
+	\subsection{Ridge Regression}
+
+	While the outputs from our Multiple Linear Regression were encouraging, we knew there were more techniques that would help us understand the true relationship between home qualities and the home's price. The first of those other techniques is Ridge Regression.
+	Ridge Regression is a shrinkage method that's goal is to weigh coefficients by introducing a shrinkage penalty. This shrinkage penalty adds a small amount of bias that, in essence, shrinks some of the coefficients asymptotically closer and closer to 0. In many cases, not only will it give you a more accurate model on unknown data, it will inform you on which of your coefficients are the most influential on your dependent variable. The formula for ridge regression is below:
+
+	Insert formula Here
+
+	Inorder to choosed the value for our tuning parameter, we decided to run a 5-Fold Cross validation. After performing said cross validation, it was determined that the best alpha level for the Ridge Regression model was 0.7. After performing ridge regression, here was our output, as well as the features who's coefficients were given the most weight:
+
+	Insert subpolotted graph.
+
+	After performming Ridge Regression, we were able to increase our Adjusted R-Squred only slightly, to 0.9103. However, what we gain more insight from is the variable's that it weight the most heavily. Those features were almost all measure of Quality and Condition. The rankings at the top and bottom of the spectrum, 1, 2, 9, and 10, were given the most weight. 
+
+	\subsection{LASSO Regression}
+
+	The last model we used against this dataset was a LASSO regression model. A LASSO Regression is similar Ridge Regression in the sense that it is a shrinkage method. Weights are also applied to coefficients, but unlike Ridge, LASSO is able to shrink "meaningless" coefficients all the way down to 0. So in a sense, it is a form of subset selection. The formula for LASSO Regression is:
+
+	Insert formula here
+
+	Inorder to choosed the value for our tuning parameter, we decided to run a 5-Fold Cross validation. After performing said cross validation, it was determined that the best alpha level for the LASSO Regression model was 5e-05. After performing LASSO Regression, here was our output, as well as the features who's coefficients were given the most weight:
+
+	Insert Subplotted graph here
+
+	The LASSO Regression model dropped 3 of the 52 features, those being: Lot Frontage, Neighborhood_SWISU, and OverallCond_5. This comes as no surprise as again the most highly weighted features were the Overall Quality and Overall Condition scores at each end of the rating scale. Additionaly, recall that the MLR found that Lot Frontage was not significant, so that could explain why LASSO reduced it to 0.
+
+	The Adjusted R-Squared produced by the LASSO Regression was 0.9101.
 	
 	
 	\section{Results}
 	
-	
-	maybe discussion as its own section?
+	From our three models, we can conclude that the Ridge Regression performed the best of the 3. See the table below for the Adjusted-R Squared values for each model. Additionally, we see that the least important variable that we passed into each model was Lot Frontage.
+	From the Ridge and LASSO regressions, we can see that Overall Condition, and Overall Quality are the most important factors in determining the price of a home. What's interesting, is that it is only the ratings for Condition and Quality at the top and bottom ends of the spectrum that are given any weight. This must mean that if you are willing to rate a house very poorly for Quality and Condition, it's price will almost assuredly be less. If you are blown away by the home and willing to rate it a 9 or a 10, it will assuredly cost more. However, the more "average" ratings, let's say 3-7, do not influence the price of a home as severly. It is also important to note that the old adage of "Location, Location, Location" does seem to be true as Loactions were the coefficients with the third highest weighting in both the Ridge and LASSO regressions. 
 	
 	
 	\section{Conclusion}
+
+	We set out to prove whether Size, Condition, Quality, Location, and Age were actually significant factors in the price of a home. It is clear that these variables are indeed the main factors in determining home prices. Quality, then Condition, and then Location are the most influential. Because we reduced the original dataset, it might be beneficial to redo this study with more features. While this make the models less interpretable, there may be other important factors that influence home prices that we have not thought of. In addition, expanding this study to include more homes in more locations. What affects home prices could be largely regional. For all we know, it could change from town to town, nevermind state to state or country to country. Nonetheless, it would appear that Quality, Condition, Size, and Age are the driving factors in home price. 
 	
 	
 \end{document}
