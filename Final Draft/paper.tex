@@ -320,6 +320,19 @@
 	\section{Results}
 	
 	From our three models, we can conclude that the Ridge Regression performed the best of the 3. See the table below for the Adjusted-R Squared values for each model. Additionally, we see that the least important variable that we passed into each model was Lot Frontage.
+
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{ll}
+		\hline
+		\multicolumn{1}{|l|}{Model} & \multicolumn{1}{l|}{Adjusted R-Squared} \\ \hline
+		Multiple Linear Regression  & 0.909                                   \\
+		Ridge Regression            & 0.9103                                  \\
+		LASSO Regression            & 0.9095                                 
+		\end{tabular}
+		\end{table}
+
+
 	From the Ridge and LASSO regressions, we can see that Overall Condition, and Overall Quality are the most important factors in determining the price of a home. What's interesting, is that it is only the ratings for Condition and Quality at the top and bottom ends of the spectrum that are given any weight. This must mean that if you are willing to rate a house very poorly for Quality and Condition, it's price will almost assuredly be less. If you are blown away by the home and willing to rate it a 9 or a 10, it will assuredly cost more. However, the more "average" ratings, let's say 3-7, do not influence the price of a home as severly. It is also important to note that the old adage of "Location, Location, Location" does seem to be true as Locations were the coefficients with the third highest weighting in both the Ridge and LASSO regressions. 
 	
 	
