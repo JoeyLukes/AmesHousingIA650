@@ -10,7 +10,7 @@
 \begin{document}
 	\maketitle
 	\section{Abstract}
-	Add this at the end
+	With inflated home prices as a result of the pandemic, it is hard to tell nowadays what is the true reason for a home's value. This study set out to determine if Location, Size, Condition, Quality, and Age are the true main factors in determining a home's price. With home sales data collected from homes in Ames, Iowa between the years 2006-2010, we set out to create a model which would tell us just that. While there were many features at our disposal to explore, our goal was to answer the main question, "Do Location, Size, Condition, Quality, and Age affect home prices?" So, we did just that by only including features in this study which related to those five factors. Three different models, were produced: Multiple Linear Regression, Ridge Regression, and LASSO Regression. All three models were chosen because of their ability to predict home price, while also telling us which factors were the most important. While all three models explained about 91 percent of the variance in home price, they confirmed our suspicians. Overall Quality and Condition are the most influential factors in the price of a home, followed by Location, Size, and Age. For rankings of Quality and Condition, it is only the rankings at the ends of the spectrum (1-3 and 8-10) that affect the home's price the most. This study should be expaned to include more miscellaneous variables that might have a hidden significant effect on the price of a home. 
 	
 	\section{Introduction}
 	Housing is one of a human's three most basic needs, so home prices will significantly affect everyone's financial health and well-being. Studies have shown, and a general knowledge of homes would tell you, that the most important factors of house price are location, quality of Materials, condition of the home, and the age of the home. We sought to determine whether these really are the most important factors, if any of these factors are more important than anotehr, or if none of those factors are important at all. 
@@ -134,7 +134,7 @@
 
 	\section{Modelling}
 
-	\subesction{Data Prep & Standardization}
+	\subsection{Data Prep and Standardization}
 	
 	As stated in previous the "Skewness of Variables" section, we first log transform the features LotFrontage, Lot Area, Wood Deck Square Footage, Total Square Footage, Total Porch Square Footage, and Years Old. In addidtion to those features, we log transform the target varaible, Sales Price.
 
@@ -151,6 +151,7 @@
 		\item[\textbullet] 10: One for each rating 1 - 10.
 		\item Overall Condition
 		\item[\textbullet] 10: One for each rating 1 - 10.
+	\end{enumerate}
 
 	\subsection{Multi-Linear Regression}
 
@@ -158,28 +159,125 @@
 
 	With multi-linear regression, we first wanted to calculate The Variance Inflation Factor (VIF) for each variable. While we were aiming for variables with a VIF of five or less, we would accept anything VIF below ten. Each numerical variable and their VIF is shown in the table below:
 
-	Table Here
-
+	\begin{table}[]
+		\centering
+		\begin{tabular}{ll}
+		\hline
+		\multicolumn{1}{|l|}{feature} & \multicolumn{1}{l|}{VIF} \\ \hline
+		LotFrontage                   & 2.29459                  \\
+		LotArea                       & 2.854278                 \\
+		WoodDeckSF                    & 1.244522                 \\
+		GarageArea                    & 1.997873                 \\
+		TotalSF                       & 3.169309                 \\
+		TotalPorchSF                  & 1.272145                 \\
+		TotalBaths                    & 2.113038                 \\
+		YearsOld                      & 7.157472                
+		\end{tabular}
+		\end{table}
+		
 	From the VIF scores, we have determined that we will keep all seven of the numerical features in our feature set. 
 
 	From there it is time to perform the MLR.
 
 	While this table is lengthy because of the 45 binary variables, you can still discern it's significance:
 
-	Table Here
+	\begin{table}[]
+		\centering
+		\begin{tabular}{lllllll}
+		\hline
+		\multicolumn{1}{|l|}{Feature}    & \multicolumn{1}{l|}{coef} & \multicolumn{1}{l|}{std err} & \multicolumn{1}{l|}{t} & \multicolumn{1}{l|}{P\textgreater{}|t|} & \multicolumn{1}{l|}{{[}0.025} & \multicolumn{1}{l|}{0.975{]}} \\ \hline
+		Lot Frontage                     & 0.0007                    & 0.006                        & 0.122                  & 0.903                                   & -0.011                        & 0.012                         \\
+		Lot Area                         & 0.0575                    & 0.006                        & 8.991                  & 0                                       & 0.045                         & 0.07                          \\
+		Wood Deck SF                     & 0.0094                    & 0.004                        & 2.221                  & 0.027                                   & 0.001                         & 0.018                         \\
+		Garage Area                      & 0.0416                    & 0.005                        & 7.779                  & 0                                       & 0.031                         & 0.052                         \\
+		Total SF                         & 0.1208                    & 0.007                        & 17.927                 & 0                                       & 0.108                         & 0.134                         \\
+		Total Porch SF                   & 0.0165                    & 0.004                        & 3.875                  & 0                                       & 0.008                         & 0.025                         \\
+		Total Baths                      & 0.0532                    & 0.006                        & 9.66                   & 0                                       & 0.042                         & 0.064                         \\
+		Years Old                        & -0.0974                   & 0.01                         & -9.614                 & 0                                       & -0.117                        & -0.077                        \\
+		Neighborhood Bloomington Heights & 1.9433                    & 0.035                        & 55.257                 & 0                                       & 1.874                         & 2.012                         \\
+		Neighborhood Bluestem            & 1.9833                    & 0.119                        & 16.639                 & 0                                       & 1.749                         & 2.217                         \\
+		Neighborhood Briardale           & 1.9228                    & 0.044                        & 44.018                 & 0                                       & 1.837                         & 2.008                         \\
+		Neighborhood Brookside           & 1.9465                    & 0.023                        & 85.246                 & 0                                       & 1.902                         & 1.991                         \\
+		Neighborhood Clear Creek         & 1.9423                    & 0.03                         & 64.753                 & 0                                       & 1.883                         & 2.001                         \\
+		Neighborhood College Creek       & 1.8809                    & 0.016                        & 118.261                & 0                                       & 1.85                          & 1.912                         \\
+		Neighborhood Crawford            & 2.0665                    & 0.023                        & 91.559                 & 0                                       & 2.022                         & 2.111                         \\
+		Neighborhood Edwards             & 1.844                     & 0.017                        & 106.709                & 0                                       & 1.81                          & 1.878                         \\
+		Neighborhood Gilbert             & 1.88                      & 0.021                        & 90.873                 & 0                                       & 1.839                         & 1.921                         \\
+		Neighborhood IDOTRR              & 1.7453                    & 0.027                        & 64.386                 & 0                                       & 1.692                         & 1.799                         \\
+		Neighborhood Meadow Village      & 1.8414                    & 0.046                        & 39.816                 & 0                                       & 1.751                         & 1.932                         \\
+		Neighborhood Mitchell            & 1.839                     & 0.022                        & 84.02                  & 0                                       & 1.796                         & 1.882                         \\
+		Neighborhood North Ames          & 1.8943                    & 0.014                        & 138.41                 & 0                                       & 1.867                         & 1.921                         \\
+		Neighborhood  Northpark Villa    & 1.9448                    & 0.051                        & 38.343                 & 0                                       & 1.845                         & 2.044                         \\
+		Neighborhood Northwest Ames      & 1.8522                    & 0.019                        & 98.438                 & 0                                       & 1.815                         & 1.889                         \\
+		Neighborhood Northridge          & 2.0108                    & 0.025                        & 79.557                 & 0                                       & 1.961                         & 2.06                          \\
+		Neighborhood Northridge Heights  & 1.9457                    & 0.022                        & 89.016                 & 0                                       & 1.903                         & 1.989                         \\
+		Neighborhood Old Town            & 1.8132                    & 0.019                        & 95.312                 & 0                                       & 1.776                         & 1.851                         \\
+		Neighborhood SWISU               & 1.9037                    & 0.038                        & 49.613                 & 0                                       & 1.828                         & 1.979                         \\
+		Neighborhood Sawyer              & 1.8826                    & 0.019                        & 96.571                 & 0                                       & 1.844                         & 1.921                         \\
+		Neighborhood Sawyer West         & 1.869                     & 0.021                        & 90.713                 & 0                                       & 1.829                         & 1.909                         \\
+		Neighborhood Somerset            & 1.9179                    & 0.02                         & 94.582                 & 0                                       & 1.878                         & 1.958                         \\
+		Neighborhood Stone Brook         & 2.036                     & 0.029                        & 69.037                 & 0                                       & 1.978                         & 2.094                         \\
+		Neighborhood Timerberland        & 1.8992                    & 0.027                        & 71.258                 & 0                                       & 1.847                         & 1.951                         \\
+		Neighborhood Veenker             & 1.9635                    & 0.038                        & 51.042                 & 0                                       & 1.888                         & 2.039                         \\
+		Overall Quality 1                & 4.8229                    & 0.06                         & 79.72                  & 0                                       & 4.704                         & 4.942                         \\
+		Overall Quality 10               & 5.1388                    & 0.041                        & 125.813                & 0                                       & 5.059                         & 5.219                         \\
+		Overall Quality 2                & 4.4444                    & 0.073                        & 60.932                 & 0                                       & 4.301                         & 4.587                         \\
+		Overall Quality 3                & 4.5405                    & 0.031                        & 144.574                & 0                                       & 4.479                         & 4.602                         \\
+		Overall Quality 4                & 4.6315                    & 0.019                        & 243.047                & 0                                       & 4.594                         & 4.669                         \\
+		Overally Quality 5               & 4.6886                    & 0.013                        & 357.467                & 0                                       & 4.663                         & 4.714                         \\
+		Overall Quality 6                & 4.748                     & 0.012                        & 382.295                & 0                                       & 4.724                         & 4.772                         \\
+		Overall Quality 7                & 4.8053                    & 0.013                        & 358.487                & 0                                       & 4.779                         & 4.832                         \\
+		Overall Quality 8                & 4.8874                    & 0.017                        & 292.007                & 0                                       & 4.855                         & 4.92                          \\
+		Overall Quality 9                & 5.0612                    & 0.026                        & 197.717                & 0                                       & 5.011                         & 5.111                         \\
+		Overall Condition 1              & 4.8229                    & 0.06                         & 79.72                  & 0                                       & 4.704                         & 4.942                         \\
+		Overall Condition 2              & 5.2046                    & 0.059                        & 87.627                 & 0                                       & 5.088                         & 5.321                         \\
+		Overall Condition 3              & 5.1532                    & 0.032                        & 161.309                & 0                                       & 5.09                          & 5.216                         \\
+		Overall Condition 4              & 5.3107                    & 0.021                        & 251.545                & 0                                       & 5.269                         & 5.352                         \\
+		Overall Condition 5              & 5.3378                    & 0.011                        & 477.68                 & 0                                       & 5.316                         & 5.36                          \\
+		Overall Condition 6              & 5.4137                    & 0.012                        & 434.983                & 0                                       & 5.389                         & 5.438                         \\
+		Overall Condition 7              & 5.4798                    & 0.014                        & 394.074                & 0                                       & 5.453                         & 5.507                         \\
+		Overall Condition 8              & 5.4771                    & 0.02                         & 280.313                & 0                                       & 5.439                         & 5.515                         \\
+		Overall Condition 9              & 5.5687                    & 0.033                        & 169.276                & 0                                       & 5.504                         & 5.633                        
+		\end{tabular}
+		\end{table}
 
 	From the above table, we can see that in general, the model is pretty effective. With and Adjusted R-Squared of 0.909, we are explaining almost 91 percent of the variance. Our plot of residuals may be slightly skewed to the positive residuals, but nothing of too much concern. The p-value of the model was too low for the software to discern, so we are left with a p-value that is virtually 0. 
+
+	\begin{figure}
+		\includegraphics[width=\textwidth]{mlrplot}
+		\caption{Residual Plots for Multiple Linear Regression}
+		\label{fig:skew}
+	\end{figure}
 
 	\subsection{Ridge Regression}
 
 	While the outputs from our Multiple Linear Regression were encouraging, we knew there were more techniques that would help us understand the true relationship between home qualities and the home's price. The first of those other techniques is Ridge Regression.
 	Ridge Regression is a shrinkage method that's goal is to weigh coefficients by introducing a shrinkage penalty. This shrinkage penalty adds a small amount of bias that, in essence, shrinks some of the coefficients asymptotically closer and closer to 0. In many cases, not only will it give you a more accurate model on unknown data, it will inform you on which of your coefficients are the most influential on your dependent variable. The formula for ridge regression is below:
 
-	Insert formula Here
+	\begin{figure}
+		\includegraphics[width=\textwidth]{ridgeform}
+		\caption{Formula for Ridge Regression. Is the same as OLS Regression, but a shrinkage penalty is applied.}
+		\label{fig:skew}
+	\end{figure}
 
 	Inorder to choosed the value for our tuning parameter, we decided to run a 5-Fold Cross validation. After performing said cross validation, it was determined that the best alpha level for the Ridge Regression model was 0.7. After performing ridge regression, here was our output, as well as the features who's coefficients were given the most weight:
 
-	Insert subpolotted graph.
+	%...
+
+	\begin{figure}[h!]
+		\centering
+		\begin{subfigure}[b]{0.4\linewidth}
+		  \includegraphics[width=\linewidth]{ridgeplot}
+		  \caption{Residual Plots for Ridge Regression}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.4\linewidth}
+		  \includegraphics[width=\linewidth]{ridgefeat}
+		  \caption{Most heavy feature weights as a result of Ridge Regression}
+		\end{subfigure}
+		\label{fig:correlation}
+	  \end{figure}
+	  
+	  %...
 
 	After performming Ridge Regression, we were able to increase our Adjusted R-Squred only slightly, to 0.9103. However, what we gain more insight from is the variable's that it weight the most heavily. Those features were almost all measure of Quality and Condition. The rankings at the top and bottom of the spectrum, 1, 2, 9, and 10, were given the most weight. 
 
@@ -187,13 +285,32 @@
 
 	The last model we used against this dataset was a LASSO regression model. A LASSO Regression is similar Ridge Regression in the sense that it is a shrinkage method. Weights are also applied to coefficients, but unlike Ridge, LASSO is able to shrink "meaningless" coefficients all the way down to 0. So in a sense, it is a form of subset selection. The formula for LASSO Regression is:
 
-	Insert formula here
+	\begin{figure}
+		\includegraphics[width=\textwidth]{lassoform}
+		\caption{Formula for LASSO Regression. Is the same as OLS Regression, but a shrinkage penalty is applied.}
+		\label{fig:skew}
+	\end{figure}
 
 	Inorder to choosed the value for our tuning parameter, we decided to run a 5-Fold Cross validation. After performing said cross validation, it was determined that the best alpha level for the LASSO Regression model was 5e-05. After performing LASSO Regression, here was our output, as well as the features who's coefficients were given the most weight:
 
-	Insert Subplotted graph here
+	%...
 
-	The LASSO Regression model dropped 3 of the 52 features, those being: Lot Frontage, Neighborhood_SWISU, and OverallCond_5. This comes as no surprise as again the most highly weighted features were the Overall Quality and Overall Condition scores at each end of the rating scale. Additionaly, recall that the MLR found that Lot Frontage was not significant, so that could explain why LASSO reduced it to 0.
+	\begin{figure}[h!]
+		\centering
+		\begin{subfigure}[b]{0.4\linewidth}
+		  \includegraphics[width=\linewidth]{lassoplot}
+		  \caption{Residual Plots for Lasso Regression}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.4\linewidth}
+		  \includegraphics[width=\linewidth]{lassofeat}
+		  \caption{Most heavy feature weights as a result of LASSO Regression}
+		\end{subfigure}
+		\label{fig:correlation}
+	  \end{figure}
+	  
+	  %...
+
+	The LASSO Regression model dropped 3 of the 52 features, those being: Lot Frontage, Neighborhood SWISU, and Overall Condition 5. This comes as no surprise as again the most highly weighted features were the Overall Quality and Overall Condition scores at each end of the rating scale. Additionaly, recall that the MLR found that Lot Frontage was not significant, so that could explain why LASSO reduced it to 0.
 
 	The Adjusted R-Squared produced by the LASSO Regression was 0.9101.
 	
